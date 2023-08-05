@@ -2,7 +2,7 @@ import React from "react";
 import propTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-const NavBar = (props) => {
+const NavBar = (props: { title: string; mode: string; toggleMode: any }) => {
   return (
     <div>
       <nav
@@ -26,7 +26,7 @@ const NavBar = (props) => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className="nav-link active" aria-current="page" to="/">
+                <Link className="nav-link" aria-current="page" to="/">
                   Home
                 </Link>
               </li>

@@ -1,6 +1,21 @@
 import React, { useState } from "react";
 
-export default function TextForm(props) {
+interface propType {
+  title: string;
+  showAlert: (arg0: string, arg1: string) => void;
+  mode: string;
+  heading:
+    | string
+    | number
+    | boolean
+    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+    | Iterable<React.ReactNode>
+    | React.ReactPortal
+    | null
+    | undefined;
+}
+
+export default function TextForm(props: propType) {
   const [text, setText] = useState("");
   const [copied, setCopied] = useState(false);
   document.title = props.title;
@@ -27,7 +42,7 @@ export default function TextForm(props) {
     props.showAlert("Converted To SentenceCase!", "success");
   };
 
-  const handleOnChange = (e) => {
+  const handleOnChange = (e: React.ChangeEvent<any>) => {
     setText(e.target.value);
   };
 
@@ -36,9 +51,6 @@ export default function TextForm(props) {
     setCopied(true);
     props.showAlert("Copied To Clipboard!", "success");
   };
-
-  // Counting words by splitting on non-word characters and filtering out empty strings
-  const wordCount = text.split(/\s+/).filter((word) => word !== "").length;
 
   return (
     <>
@@ -57,24 +69,34 @@ export default function TextForm(props) {
               color: props.mode === "dark" ? "white" : "black",
             }}
             id="myBox"
-            rows="8"
+            rows={8}
           ></textarea>
         </div>
         <div className={`text-center`}>
-          <button className="btn btn-primary mx-1" onClick={handleUperCase}>
+          <button
+            disabled={text.length === 0}
+            className="btn btn-primary mx-1 my-1"
+            onClick={handleUperCase}
+          >
             Convert to UpperCase
           </button>{" "}
-          <button className="btn btn-primary mx-1" onClick={handleLowerCase}>
+          <button
+            disabled={text.length === 0}
+            className="btn btn-primary mx-1 my-1"
+            onClick={handleLowerCase}
+          >
             Convert to LowerCase
           </button>{" "}
           <button
-            className="btn btn-primary mx-1"
+            disabled={text.length === 0}
+            className="btn btn-primary mx-1 my-1"
             onClick={handleToSentenceCase}
           >
             To Sentence Case
           </button>
           <button
-            className="btn btn-primary mx-1"
+            disabled={text.length === 0}
+            className="btn btn-primary mx-1 my-1"
             onClick={() => {
               setText("");
               props.showAlert("Text Cleared Successfully!", "success");
@@ -93,7 +115,14 @@ export default function TextForm(props) {
           >
             <div className="card-body">
               <h1>Your Summary</h1>
-              <p>Words: {wordCount}</p>
+              <p>
+                Words:{" "}
+                {
+                  text.split(/\s/).filter((elem) => {
+                    return elem.length !== 0;
+                  }).length
+                }
+              </p>
               <p>Characters: {!text.length ? "0" : text.length}</p>
             </div>
           </div>
@@ -108,15 +137,13 @@ export default function TextForm(props) {
               <h3>Output Preview</h3>
               <div className="card my-3">
                 <div className="card-body">
-                  {text.length > 0
-                    ? text
-                    : "Enter Somthing in TextBox Above to Preview it Here "}
+                  {text.length > 0 ? text : "Nothing To Preview"}
                 </div>
               </div>
               <button
                 className="btn btn-primary mx-1"
                 onClick={handleCopyOutput}
-                disabled={!text.length}
+                disabled={text.length === 0}
               >
                 Copy Output
               </button>

@@ -1,7 +1,7 @@
 import React from "react";
 
-export default function About(props) {
-  document.title = props.title
+export default function About(props: { title: string; mode: string }) {
+  document.title = props.title;
   return (
     <div
       className="container"
